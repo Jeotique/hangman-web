@@ -1,0 +1,19 @@
+{{define "index"}}
+<html>
+<head>
+    <title>Pendu Game</title>
+</head>
+<body>
+<h1>Pendu Game</h1>
+<form action="/play">
+    <label for="difficulty">Difficulté:</label>
+    <select id="difficulty" name="difficulty">
+        <option value="easy">Facile</option>
+        <option value="medium">Moyen</option>
+        <option value="hard">Difficile</option>
+    </select>
+    <input type="submit" value="Jouer">
+</form>
+</body>
+</html>
+{{end}}

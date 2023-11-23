@@ -1,0 +1,24 @@
+{{define "lose"}}
+<html>
+<head>
+    <title>Jeu du pendu</title>
+</head>
+<body>
+<h1>Défaite</h1>
+<p>Le mot été : {{.Word}}</p>
+{{if le .Difficulty "easy"}}
+<p>Dommage</p>
+{{end}}
+{{if le .Difficulty "medium"}}
+<p>Dommage, essaie la difficulté Facile</p>
+{{end}}
+{{if le .Difficulty "hard"}}
+<p>Cheh</p>
+{{end}}
+
+<a href="/">
+    <button>Retourner au menu</button>
+</a>
+</body>
+</html>
+{{end}}

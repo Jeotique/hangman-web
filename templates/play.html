@@ -1,0 +1,23 @@
+{{define "play"}}
+<html>
+<head>
+  <title>Jeu du pendu</title>
+</head>
+<body>
+<h1>Jeu du pendu</h1>
+<p>Vous avez choisi le niveau : {{.Difficulty}}</p>
+<p>Nombre d'erreurs : {{.Errors}}</p>
+<ul>
+  {{range $index, $v := .Guesses}}
+  <li>[{{$index}}] {{$v}}</li>
+  {{end}}
+</ul>
+<form action="/play/post" method="post">
+  <label for="word">Entrer une lettre ou un mot :</label>
+  <input type="text" id="word" name="word"><br><br>
+  <input type="submit" value="Tester">
+</form>
+<p>{{.Word}}</p>
+</body>
+</html>
+{{end}}
