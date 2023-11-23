@@ -2,18 +2,22 @@
 <html>
 <head>
     <title>Pendu Game</title>
+    <link rel="stylesheet" href="../asset/css/bases.css">
+    <link rel="stylesheet" href="../asset/css.index.css">
 </head>
 <body>
-<h1>Pendu Game</h1>
-<form action="/play">
-    <label for="difficulty">Difficulté:</label>
-    <select id="difficulty" name="difficulty">
-        <option value="easy">Facile</option>
-        <option value="medium">Moyen</option>
-        <option value="hard">Difficile</option>
-    </select>
-    <input type="submit" value="Jouer">
-</form>
+    <div id="container"> 
+    <h1>Pendu Game</h1>
+    <form action="/play">
+        <label for="difficulty">Difficulté:</label>
+        <select id="difficulty" name="difficulty">
+            <option value="easy">Facile</option>
+            <option value="medium">Moyen</option>
+            <option value="hard">Difficile</option>
+        </select>
+        <input type="submit" value="Jouer">
+    </form>
+</div>
 </body>
 </html>
 {{end}}
