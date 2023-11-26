@@ -10,11 +10,9 @@
       <h1>Jeu du pendu</h1>
     <p>Vous avez choisi le niveau : {{.Difficulty}}</p>
     <p>Nombre d'erreurs : {{.Errors}}</p>
-    <div class="lst">
       {{range .Guesses}}
           <span>{{$v}}</span>
       {{end}}
-  </div>
   <form action="/play/post" method="post">
     <label for="word">Entrer une lettre ou un mot :</label>
     <input type="text" id="word" name="word"><br><br>

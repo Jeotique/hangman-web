@@ -21,7 +21,7 @@
   flex-flow: wrap;
   text-align: center;
 }
-.lst {
+#container span {
   font-size: 25px;
   color: white;
   margin: 40px;
