@@ -21,6 +21,22 @@
   flex-flow: wrap;
   text-align: center;
 }
+#container span {
+  font-size: 25px;
+  color: white;
+  margin: 40px;
+  padding: 0;
+  flex-flow: wrap;
+  ;
+}
+#container p {
+  font-size: 25px;
+  color: white;
+  margin: 40px;
+  padding: 0;
+  flex-flow: wrap;
+  text-align: center;
+}
 strong {
   color: var(--oran);
 }

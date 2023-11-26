@@ -24,14 +24,14 @@ func main() {
 	http.HandleFunc("/", indexPage)
 	http.HandleFunc("/play", playPage)
 	http.HandleFunc("/play/post", execPost)
+	rootDoc, _ := os.Getwd()
+	fileserver := http.FileServer(http.Dir(rootDoc + "/asset"))
+	http.Handle("/static/", http.StripPrefix("/static/", fileserver))
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	rootDoc, _ := os.Getwd()
-	fileserver := http.FileServer(http.Dir(rootDoc + "/asset"))
-	http.Handle("/static/", http.StripPrefix("/static/", fileserver))
 }
 
 func execPost(w http.ResponseWriter, r *http.Request) {
