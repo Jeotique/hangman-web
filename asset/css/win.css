@@ -21,9 +21,6 @@
   flex-flow: wrap;
   text-align: center;
 }
-strong {
-  color: var(--oran);
-}
 #container a {
   align-items: center;
   appearance: none;
