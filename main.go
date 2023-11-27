@@ -5,13 +5,21 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"project/bdd"
 	"project/hangman"
 )
 
 var temp *template.Template
+var Bdd *bdd.QuickDB
 
 func main() {
 	tmp, err := template.ParseGlob("./templates/*.html")
+	Bdd = bdd.NewQuickDB("database.json")
+	errrr := Bdd.LoadUsers()
+	if errrr != nil {
+		log.Fatal(errrr)
+		return
+	}
 	temp = tmp
 	if err != nil {
 		log.Fatal(err)
@@ -35,6 +43,7 @@ func execPost(w http.ResponseWriter, r *http.Request) {
 	data := r.FormValue("word")
 	username := r.FormValue("username")
 	result := hangman.TestLetterOrWord(data, username)
+	SaveUsers()
 	switch result {
 	case "win":
 		WinPage(w, username)
@@ -56,6 +65,7 @@ func WinPage(w http.ResponseWriter, username string) {
 		Word:       hangman.Users[username].WordToGuess,
 		Difficulty: hangman.Users[username].Difficulty,
 	})
+	SaveUsers()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -70,6 +80,7 @@ func LosePage(w http.ResponseWriter, username string) {
 		Word:       hangman.Users[username].WordToGuess,
 		Difficulty: hangman.Users[username].Difficulty,
 	})
+	SaveUsers()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -83,6 +94,7 @@ func RefreshPlayPage(w http.ResponseWriter, username string) {
 		finalWord += i
 	}
 	userData.GuessWord = finalWord
+	SaveUsers()
 	err := temp.ExecuteTemplate(w, "play", userData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -108,9 +120,21 @@ func playPage(w http.ResponseWriter, r *http.Request) {
 		finalWord += i
 	}
 	userData.GuessWord = finalWord
+	SaveUsers()
 	err := temp.ExecuteTemplate(w, "play", userData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+}
+
+func SaveUsers() {
+	var users []hangman.GameData
+	for _, i := range hangman.Users {
+		users = append(users, i)
+	}
+	err := Bdd.SaveUsers(users)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
