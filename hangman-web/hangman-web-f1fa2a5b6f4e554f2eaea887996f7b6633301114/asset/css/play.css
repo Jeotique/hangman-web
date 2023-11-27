@@ -21,13 +21,17 @@
   flex-flow: wrap;
   text-align: center;
 }
+#container ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style-type: none; /* Supprime les puces de la liste */
+  padding: 0; /* Supprime le remplissage par défaut de la liste */
+}
+
 #container li {
-  font-size: 25px;
-  color: white;
-  margin: 40px;
-  padding: 0;
-  flex-flow: wrap;
-  ;
+  display: inline-block; /* Affiche les éléments en ligne avec les marges */
+  margin-right: 10px; /* Ajoute une marge entre les éléments (ajustez selon vos besoins) */
 }
 #container p {
   font-size: 25px;
