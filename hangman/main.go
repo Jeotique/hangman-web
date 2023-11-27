@@ -29,43 +29,54 @@ func GenerateWord(difficulty string) string {
 	return strings.Trim(finalWord, "\n")
 }
 
-func TestLetterOrWord(data string, user GameData) string {
+func TestLetterOrWord(data string, username string) string {
+	User := Users[username]
 	if len(data) > 1 {
-		if data == user.WordToGuess {
+		if data == User.WordToGuess {
 			return "win"
 		} else {
-			user.Errors += 2
-			if user.Errors >= 10 {
+			User.Errors += 2
+			Users[username] = User
+			if User.Errors >= 10 {
+				User.IsInGame = false
+				Users[username] = User
 				return "lose"
 			} else {
 				return "refresh"
 			}
 		}
 	} else if len(data) == 1 {
-		println("test letter len 1")
-		if user.GivenLetters[data] {
+		if User.GivenLetters[data] {
 			return "refresh"
 		} else {
-			user.GivenLetters[data] = true
-			if strings.Contains(user.WordToGuess, data) {
-				user.Guessed = strings.Split(user.WordToGuess, "")
-				for i, s := range user.WordToGuess {
-					if user.GivenLetters[string(s)] {
-						user.Guessed[i] = string(s)
+			User.GivenLetters[data] = true
+			if strings.Contains(User.WordToGuess, data) {
+				User.Guessed = strings.Split(User.WordToGuess, "")
+				for i, s := range User.WordToGuess {
+					if User.GivenLetters[string(s)] {
+						User.Guessed[i] = string(s)
 					} else {
-						user.Guessed[i] = "_"
+						User.Guessed[i] = "_"
 					}
 				}
-				if !slices.Contains(user.Guessed, "_") {
+				Users[username] = User
+				if !slices.Contains(User.Guessed, "_") {
+					User.IsInGame = false
+					Users[username] = User
 					return "win"
 				} else {
 					return "refresh"
 				}
 			} else {
-				user.Errors += 1
-				println("erreur")
-				println(user.Errors)
-				return "refresh"
+				User.Errors += 1
+				Users[username] = User
+				if User.Errors >= 10 {
+					User.IsInGame = false
+					Users[username] = User
+					return "lose"
+				} else {
+					return "refresh"
+				}
 			}
 		}
 	} else {
@@ -81,6 +92,11 @@ func GetGameData(difficulty string, username string) GameData {
 	letter1 := rand.Intn(len(WordToGuess))
 	letter2 := rand.Intn(len(WordToGuess))
 	letter3 := rand.Intn(len(WordToGuess))
+	if value, exists := Users[username]; exists {
+		if value.IsInGame {
+			return value
+		}
+	}
 	Users[username] = GameData{
 		Difficulty:   difficulty,
 		Errors:       0,
@@ -89,12 +105,14 @@ func GetGameData(difficulty string, username string) GameData {
 		GivenLetters: make(map[string]bool),
 		GuessWord:    strings.Repeat("_", len(WordToGuess)),
 		Username:     username,
+		IsInGame:     true,
 	}
 	Users[username].GivenLetters[string(rune(WordToGuess[letter1]))] = true
 	Users[username].Guessed[letter1] = string(rune(WordToGuess[letter1]))
 	if difficulty == "easy" || difficulty == "medium" {
 		Users[username].GivenLetters[string(rune(WordToGuess[letter2]))] = true
 		Users[username].Guessed[letter2] = string(rune(WordToGuess[letter2]))
+
 	}
 	if difficulty == "easy" {
 		Users[username].GivenLetters[string(rune(WordToGuess[letter3]))] = true

@@ -12,7 +12,7 @@
     <p>Nombre d'erreurs : {{.Errors}}</p>
       <h2 style="color: white">{{.GuessWord}}</h2>
   <form action="/play/post" method="post">
-    <label for="word">Entrer une lettre ou un mot :</label>
+    <label for="word" style="color: white">Entrer une lettre ou un mot :</label>
     <input type="text" id="word" name="word"><br><br>
     <input type="submit" value="Tester">
     <input type="hidden" id="username" name="username" value="{{.Username}}">

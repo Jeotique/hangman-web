@@ -32,11 +32,9 @@ func main() {
 }
 
 func execPost(w http.ResponseWriter, r *http.Request) {
-	println("exec post")
 	data := r.FormValue("word")
 	username := r.FormValue("username")
-	println(username)
-	result := hangman.TestLetterOrWord(data, hangman.Users[username])
+	result := hangman.TestLetterOrWord(data, username)
 	switch result {
 	case "win":
 		WinPage(w, username)
@@ -51,7 +49,6 @@ func execPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func WinPage(w http.ResponseWriter, username string) {
-	println("win")
 	err := temp.ExecuteTemplate(w, "win", struct {
 		Word       string
 		Difficulty string
@@ -66,7 +63,6 @@ func WinPage(w http.ResponseWriter, username string) {
 }
 
 func LosePage(w http.ResponseWriter, username string) {
-	println("lose")
 	err := temp.ExecuteTemplate(w, "lose", struct {
 		Word       string
 		Difficulty string
@@ -81,11 +77,7 @@ func LosePage(w http.ResponseWriter, username string) {
 }
 
 func RefreshPlayPage(w http.ResponseWriter, username string) {
-	println("refresh play")
-
 	userData := hangman.GetGameExistingData(username)
-	println(userData.Errors)
-	println(userData.GuessWord)
 	finalWord := ""
 	for _, i := range userData.Guessed {
 		finalWord += i
@@ -99,7 +91,6 @@ func RefreshPlayPage(w http.ResponseWriter, username string) {
 }
 
 func indexPage(w http.ResponseWriter, r *http.Request) {
-	println("index")
 	err := temp.ExecuteTemplate(w, "index", nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -108,13 +99,15 @@ func indexPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func playPage(w http.ResponseWriter, r *http.Request) {
-	println("play")
 	difficulty := r.FormValue("difficulty")
 	username := r.FormValue("username")
 
 	userData := hangman.GetGameData(difficulty, username)
-	println(userData.Username)
-
+	finalWord := ""
+	for _, i := range userData.Guessed {
+		finalWord += i
+	}
+	userData.GuessWord = finalWord
 	err := temp.ExecuteTemplate(w, "play", userData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

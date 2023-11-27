@@ -8,6 +8,7 @@ type GameData struct {
 	GivenLetters map[string]bool
 	Difficulty   string
 	Username     string
+	IsInGame     bool
 }
 
 var Users = make(map[string]GameData)
